@@ -4,7 +4,7 @@
 #include <time.h>
 #include <math.h>
 
-
+//// CPU ONLY - did not do GPU yet 
 
 typedef struct {
     int m;                  // size of bit vector
