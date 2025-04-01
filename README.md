@@ -40,7 +40,8 @@ If any are 0 --> item is definitely not in the set
    - If the key is not in the stored list, count it as a false positive.  
 6. Calculate the false positive rate:  
    `(false positives / total test queries) * 100`.  
-7. Repeat steps 1–6 for values of `k`  from 1 to 63.  
+7. Repeat steps 1–6 for values of `k`  from 1 to 63. 
+8. Add a theoretical calculation using equation onWiki.  
 8. Record each result (`k`, false positive rate) into a CSV file.  
 9. Output results to console and save the file for visualization.  
 
