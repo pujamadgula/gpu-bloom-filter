@@ -1,5 +1,8 @@
 # gpu-bloom-filter
 
+## run command
+gcc simple_bloom_cpu.c -o bloom
+
 
 ### Background
 
@@ -7,6 +10,10 @@
 - "Is this item "possibly" in the set, or definitely not??"
 - False positives are possible but false negatives are not
 - Useful for memory-efficiency --> space and speed 
+
+m = required number of bits
+
+n = number of inserted elements
 
 
 ### Example 
@@ -28,7 +35,7 @@ If any are 0 --> item is definitely not in the set
 ## Algorithm Description
 
 1. Initialize  Bloom filter with a bit vector of size `m` and `k` hash functions.  
-2. Generate `n` random strings using a limited character set ( `"abcde"`).  
+2. Generate `n` random strings using a limited character set ( "abcde").  
 3. For each string:
    - Compute `k` hash values using a seeded hash function. -- can modify different hash functions to get more ideal FPR in the future.
    - Set those `k` bit positions in the vector to 1.
@@ -202,5 +209,3 @@ https://en.wikipedia.org/wiki/Bloom_filter
 https://glowingpython.blogspot.com/2013/01/bloom-filter.html
 https://www.cs.jhu.edu/~langmea/resources/lecture_notes/115_bloom_filters_pub.pdf
 
-## run command
-gcc simple_bloom.c -o bloom

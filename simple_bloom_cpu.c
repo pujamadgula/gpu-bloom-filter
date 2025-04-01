@@ -13,7 +13,7 @@ typedef struct {
     char** keys;            // store actual keys for verification
     int data_size;          // number of inserted keys
 
-    int false_positive;     // counter for incorrec t "might be present"
+    int false_positive;     // counter for incorrect "might be present"
 } Bloom;
 
 
@@ -29,7 +29,7 @@ unsigned int simple_hash(const char* str, int seed) {
 
 // Creat a new Bloom filter
 Bloom* create_bloom(int m, int k) {
-    Bloom* b = malloc(sizeof(Bloom)); // Aallocate memory for bloom filter struc.
+    Bloom* b = malloc(sizeof(Bloom)); // Allocate memory for bloom filter structure
     (*b).m = m;
     (*b).k = k;
     (*b).vector = calloc(m, sizeof(int)); // Initialize bit vector to all 0s
@@ -42,7 +42,7 @@ Bloom* create_bloom(int m, int k) {
 // Inserting a key into Bloom filter
 void insert_bloom(Bloom* b, const char* key) {
     (*b).keys[(*b).data_size++] = strdup(key); // Store the key in memory for later lookup
-    for (int i = 0; i < (*b).k; ++i) {
+    for (int i = 0; i < (*b).k; i++) {
         unsigned int index = simple_hash(key, i + 1) % (*b).m ; // Generate k different hash indices
         (*b).vector[index] = 1; // Set corresponding bit to 1
     }
@@ -53,7 +53,8 @@ void insert_bloom(Bloom* b, const char* key) {
 int contains_bloom(Bloom* b, const char* key) {
     for (int i = 0; i < (*b).k; i++) {
         unsigned int index = simple_hash(key, i + 1) % (*b).m; 
-        if ((*b).vector[index] == 0) return 0; // If any bit is 0, the item is definitely not present
+        if ((*b).vector[index] == 0) 
+        return 0; // If any bit is 0, the item is definitely not present
     }
     return 1;  // All bits are 1 thhe item might be present (could be a false positive)
 }
@@ -76,12 +77,14 @@ char* get_bloom(Bloom* b, const char* key) {
 // Generate a random string of length n using given chars
 char* rand_data(int n, const char* chars) {
     int len = strlen(chars);
-    char* res = malloc(n + 1);
+    char* res = malloc(n + 1); // **C strings terminated by \0 (+1 for \0)
     for (int i = 0; i < n; i++)
         res[i] = chars[rand() % len];
-    res[n] = '\0';
+    
+    res[n] = '\0'; // C string specific
     return res;
 }
+
 
 
 
@@ -109,6 +112,8 @@ float bloom_test(int m, int n, int k) {
     // Cleanup (Free up all space)
     for (int i = 0; i < n; i++)
         free(inserted[i]);
+
+    
     free(inserted);
 
     for (int i = 0; i < (*bloom).data_size; i++)
@@ -137,6 +142,7 @@ int main() {
 
 
     for (int k = 1; k <= 63; ++k) {
+
         float perc = bloom_test(m, n, k);                   // experimental result
         double theory = theoretical_fp(m, n, k);           // theoretical result
         printf("k = %2d → %.2f%% actual, %.2f%% theoretical\n", k, perc, theory);
